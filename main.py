@@ -30,16 +30,17 @@ def newton_formula(f, df, x0, tolerance, max_iter):
         iteration_values.append({"iteration": i+1, "x_value": x0, "f(x)": result_of_f, "f'(x)": result_of_diff})
         x_values.append(x0)
         x_new = x0 - float(result_of_f/result_of_diff)
+        print(x_new)
         if abs(x_new - x0) < tolerance:
-            iteration_values.append({"iteration": i+1, "x_value": x_new, "f(x)": f.subs(x,x_new), "f'(x)": df.subs(x,x_new)})
+            iteration_values.append({"iteration": i+2, "x_value": x_new, "f(x)": f.subs(x,x_new), "f'(x)": df.subs(x,x_new)})
             x_values.append(x_new)
             return x_new, x_values, iteration_values
         x0 = x_new
         
-    return None
+    return None, x_values, iteration_values
 
-result = newton_formula(f1, df1, 2, 1, 5)
-print(f"Converged x value: {result[0]}\n")
+result = newton_formula(f1, df1, 2, 1e-6, 20)
+print(f"Converged x value: {float(result[0])}\n")
 print("Real roots of f1: (-1, 4)\n")
 print(f"All x values in order: {result[1]}\n")
 print("Iterations Detail:")
@@ -60,3 +61,4 @@ plt.xlabel(f"x values in order: {[i for i in result[1]]}")
 plt.ylabel(f"converged x value: {result[0]}")
 plt.plot(result[1], [f1.subs(x, val) for val in result[1]],ls='--', marker='o', color='red')
 plt.show()
+

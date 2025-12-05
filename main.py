@@ -5,6 +5,11 @@ import numpy as np
 import sympy
 
 x = sympy.Symbol("x")
+f1 = (x+1)*(x-4)
+f2 = (x-1)*(x+3)
+f3 = (x-4)*(x-1)*(x+3)
+f4 = x**3 - 1
+_functions = [(f1, sympy.diff(f1,x,), [-1,4]), (f2, sympy.diff(f2,x), [1,-3]), (f3, sympy.diff(f3,x),[-3,1,4]), (f4, sympy.diff(f4,x),[1+0j, -0.5+0.8660254j , -0.5-0.8660254j])]
 
 def draw_complex_graph(f,result, roots):
     x_vals = np.linspace(-10, 10,1000)
@@ -75,11 +80,7 @@ def newton_formula(f, df, x0, tolerance, max_iter):
         
     return False, x_values, iteration_values
 
-f1 = (x+1)*(x-4)
-f2 = (x-1)*(x+3)
-f3 = (x-4)*(x-1)*(x+3)
-f4 = x**3 - 1
-_functions = [(f1, sympy.diff(f1,x,), [-1,4]), (f2, sympy.diff(f2,x), [1,-3]), (f3, sympy.diff(f3,x),[-3,1,4]), (f4, sympy.diff(f4,x),[1+0j, -0.5+0.8660254j , -0.5-0.8660254j])]
+
 def newton_raphson_according_to_user_input():
     
     for f, df, roots in _functions:
@@ -133,7 +134,9 @@ def basin_of_attraction(f,df, roots):
         df_z[df_z == 0] = 1e-12
         z = z - f_z / df_z
     
+    ### Assigning basin indicies to pixels
     img_ = np.zeros(z.shape, dtype=int)
+    ### Converting roots to numpy array for easier comparison
     roots = np.array(roots, dtype=complex)
     
     for i, root in enumerate(roots):
@@ -149,6 +152,7 @@ def basin_of_attraction(f,df, roots):
     plt.title(f)
     plt.legend()
     plt.show()
+    
 
 for f, df, roots in _functions:
     basin_of_attraction(f, df, roots)

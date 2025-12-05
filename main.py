@@ -125,9 +125,11 @@ def basin_of_attraction(f,df, roots):
     z = X + 1j * Y
     max_iterations = 50
     tolerance = 1e-6
+    ### Newton-Raphson Iteration
     for i in range(max_iterations):
         f_z = f_numpy(z)
         df_z = df_numpy(z)
+        ### Handling division by zero
         df_z[df_z == 0] = 1e-12
         z = z - f_z / df_z
     
